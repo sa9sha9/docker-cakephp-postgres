@@ -1,0 +1,51 @@
+version: '2'
+
+services:
+  cakephp-5.6apache.dev:
+    image: occitech/cakephp:5.6-apache
+    ports:
+      - 3939:80
+    volumes:
+      - ./:/hoge
+      - ~/public_html/pilot.dev:/var/www/html
+#      - /private/var/lib/postgres/data:/var/lib/postgresql/data
+      - ./data:/var/lib/postgresql/data
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: example
+
+  postgresql.dev:
+    image: postgres
+    ports:
+      - 5432:5432
+    volumes_from:
+      - cakephp-5.6apache.dev
+    restart: always
+
+#  php5.6-apache.dev:
+#    image: yousan/php5.6-apache
+#    ports:
+#      - 80:80
+#    volumes:
+#      # Add symlink directories if you use symlinks at documents.
+#      - ~/git:/Users/sa9sha9/git      # gitリポジトリを管理するディレクトリ
+#      - .:/Users/sa9sha9/plant        # その他共有したいファイルを管理するディレクトリ
+#      - ~/public_html:/var/www/vhosts # public_htmlに入ってるルーティング先のディレクトリ
+#    environment:
+#      PMA_HOST: mysql.dev
+#      PMA_USER: root
+#      PMA_PASSWORD: karmacorrect
+#    restart: always
+#
+#  mysql.dev:
+#    image: mariadb
+#    environment:
+#      MYSQL_ROOT_PASSWORD: karmacorrect
+#    ports:
+#      - 3306:3306
+#    volumes_from:
+#      - php5.6-apache.dev
+##    volumes:
+##      - /usr/local/var/mysql/:/var/lib/mysql
+##      - /private/var/lib/mysql:/var/lib/mysql
+#    restart: always
